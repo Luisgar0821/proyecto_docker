@@ -1,0 +1,8 @@
+venv/
+dataset_api.csv
+lung_cancer_prediction_dataset.csv
+merge_dataset.csv
+merge_dataset_cleaned.csv
+temp_api_data.csv
+temp_merged.csv
+temp_transformed.csv

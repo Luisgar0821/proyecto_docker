@@ -1,0 +1,19 @@
+[2025-05-18T12:35:53.745+0000] {logging_mixin.py:188} INFO - Changing /opt/airflow/logs/dag_id=etl_dimensional_model/run_id=manual__2025-05-18T12:35:52.490194+00:00/task_id=extract_csv permission to 509
+[2025-05-18T12:35:53.745+0000] {logging_mixin.py:188} INFO - Failed to change /opt/airflow/logs/dag_id=etl_dimensional_model/run_id=manual__2025-05-18T12:35:52.490194+00:00/task_id=extract_csv permission to 509: [Errno 1] Operation not permitted: '/opt/airflow/logs/dag_id=etl_dimensional_model/run_id=manual__2025-05-18T12:35:52.490194+00:00/task_id=extract_csv'
+[2025-05-18T12:35:53.772+0000] {logging_mixin.py:188} INFO - Changing /opt/airflow/logs/dag_id=etl_dimensional_model/run_id=manual__2025-05-18T12:35:52.490194+00:00/task_id=extract_csv permission to 509
+[2025-05-18T12:35:53.772+0000] {logging_mixin.py:188} INFO - Failed to change /opt/airflow/logs/dag_id=etl_dimensional_model/run_id=manual__2025-05-18T12:35:52.490194+00:00/task_id=extract_csv permission to 509: [Errno 1] Operation not permitted: '/opt/airflow/logs/dag_id=etl_dimensional_model/run_id=manual__2025-05-18T12:35:52.490194+00:00/task_id=extract_csv'
+[2025-05-18T12:35:53.804+0000] {taskinstance.py:1957} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: etl_dimensional_model.extract_csv manual__2025-05-18T12:35:52.490194+00:00 [queued]>
+[2025-05-18T12:35:53.810+0000] {taskinstance.py:1957} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: etl_dimensional_model.extract_csv manual__2025-05-18T12:35:52.490194+00:00 [queued]>
+[2025-05-18T12:35:53.810+0000] {taskinstance.py:2171} INFO - Starting attempt 1 of 1
+[2025-05-18T12:35:53.823+0000] {taskinstance.py:2192} INFO - Executing <Task(PythonOperator): extract_csv> on 2025-05-18 12:35:52.490194+00:00
+[2025-05-18T12:35:53.826+0000] {standard_task_runner.py:60} INFO - Started process 217 to run task
+[2025-05-18T12:35:53.830+0000] {standard_task_runner.py:87} INFO - Running: ['airflow', 'tasks', 'run', 'etl_dimensional_model', 'extract_csv', 'manual__2025-05-18T12:35:52.490194+00:00', '--job-id', '2', '--raw', '--subdir', 'DAGS_FOLDER/etl_load_postgres_dag.py', '--cfg-path', '/tmp/tmp7qqect08']
+[2025-05-18T12:35:53.832+0000] {standard_task_runner.py:88} INFO - Job 2: Subtask extract_csv
+[2025-05-18T12:35:53.875+0000] {logging_mixin.py:188} INFO - Changing /opt/airflow/logs/dag_id=etl_dimensional_model/run_id=manual__2025-05-18T12:35:52.490194+00:00/task_id=extract_csv permission to 509
+[2025-05-18T12:35:53.876+0000] {logging_mixin.py:188} INFO - Failed to change /opt/airflow/logs/dag_id=etl_dimensional_model/run_id=manual__2025-05-18T12:35:52.490194+00:00/task_id=extract_csv permission to 509: [Errno 1] Operation not permitted: '/opt/airflow/logs/dag_id=etl_dimensional_model/run_id=manual__2025-05-18T12:35:52.490194+00:00/task_id=extract_csv'
+[2025-05-18T12:35:53.877+0000] {task_command.py:423} INFO - Running <TaskInstance: etl_dimensional_model.extract_csv manual__2025-05-18T12:35:52.490194+00:00 [running]> on host 12957649f5de
+[2025-05-18T12:35:54.091+0000] {taskinstance.py:2481} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='airflow' AIRFLOW_CTX_DAG_ID='etl_dimensional_model' AIRFLOW_CTX_TASK_ID='extract_csv' AIRFLOW_CTX_EXECUTION_DATE='2025-05-18T12:35:52.490194+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2025-05-18T12:35:52.490194+00:00'
+[2025-05-18T12:35:55.850+0000] {python.py:201} INFO - Done. Returned value was: None
+[2025-05-18T12:35:55.859+0000] {taskinstance.py:1138} INFO - Marking task as SUCCESS. dag_id=etl_dimensional_model, task_id=extract_csv, execution_date=20250518T123552, start_date=20250518T123553, end_date=20250518T123555
+[2025-05-18T12:35:55.886+0000] {local_task_job_runner.py:234} INFO - Task exited with return code 0
+[2025-05-18T12:35:55.912+0000] {taskinstance.py:3281} INFO - 1 downstream tasks scheduled from follow-on schedule check

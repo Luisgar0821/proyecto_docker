@@ -1,0 +1,38 @@
+[2025-05-18T02:42:46.466+0000] {logging_mixin.py:188} INFO - Changing /opt/airflow/logs/dag_id=etl_dimensional_model/run_id=manual__2025-05-18T02:42:25.693041+00:00/task_id=populate_dimensional_model permission to 509
+[2025-05-18T02:42:46.466+0000] {logging_mixin.py:188} INFO - Failed to change /opt/airflow/logs/dag_id=etl_dimensional_model/run_id=manual__2025-05-18T02:42:25.693041+00:00/task_id=populate_dimensional_model permission to 509: [Errno 1] Operation not permitted: '/opt/airflow/logs/dag_id=etl_dimensional_model/run_id=manual__2025-05-18T02:42:25.693041+00:00/task_id=populate_dimensional_model'
+[2025-05-18T02:42:46.488+0000] {logging_mixin.py:188} INFO - Changing /opt/airflow/logs/dag_id=etl_dimensional_model/run_id=manual__2025-05-18T02:42:25.693041+00:00/task_id=populate_dimensional_model permission to 509
+[2025-05-18T02:42:46.488+0000] {logging_mixin.py:188} INFO - Failed to change /opt/airflow/logs/dag_id=etl_dimensional_model/run_id=manual__2025-05-18T02:42:25.693041+00:00/task_id=populate_dimensional_model permission to 509: [Errno 1] Operation not permitted: '/opt/airflow/logs/dag_id=etl_dimensional_model/run_id=manual__2025-05-18T02:42:25.693041+00:00/task_id=populate_dimensional_model'
+[2025-05-18T02:42:46.521+0000] {taskinstance.py:1957} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: etl_dimensional_model.populate_dimensional_model manual__2025-05-18T02:42:25.693041+00:00 [queued]>
+[2025-05-18T02:42:46.527+0000] {taskinstance.py:1957} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: etl_dimensional_model.populate_dimensional_model manual__2025-05-18T02:42:25.693041+00:00 [queued]>
+[2025-05-18T02:42:46.527+0000] {taskinstance.py:2171} INFO - Starting attempt 1 of 1
+[2025-05-18T02:42:46.537+0000] {taskinstance.py:2192} INFO - Executing <Task(PythonOperator): populate_dimensional_model> on 2025-05-18 02:42:25.693041+00:00
+[2025-05-18T02:42:46.542+0000] {standard_task_runner.py:60} INFO - Started process 230 to run task
+[2025-05-18T02:42:46.544+0000] {standard_task_runner.py:87} INFO - Running: ['airflow', 'tasks', 'run', 'etl_dimensional_model', 'populate_dimensional_model', 'manual__2025-05-18T02:42:25.693041+00:00', '--job-id', '7', '--raw', '--subdir', 'DAGS_FOLDER/etl_load_postgres_dag.py', '--cfg-path', '/tmp/tmpuyhqeaj6']
+[2025-05-18T02:42:46.546+0000] {standard_task_runner.py:88} INFO - Job 7: Subtask populate_dimensional_model
+[2025-05-18T02:42:46.581+0000] {logging_mixin.py:188} INFO - Changing /opt/airflow/logs/dag_id=etl_dimensional_model/run_id=manual__2025-05-18T02:42:25.693041+00:00/task_id=populate_dimensional_model permission to 509
+[2025-05-18T02:42:46.582+0000] {logging_mixin.py:188} INFO - Failed to change /opt/airflow/logs/dag_id=etl_dimensional_model/run_id=manual__2025-05-18T02:42:25.693041+00:00/task_id=populate_dimensional_model permission to 509: [Errno 1] Operation not permitted: '/opt/airflow/logs/dag_id=etl_dimensional_model/run_id=manual__2025-05-18T02:42:25.693041+00:00/task_id=populate_dimensional_model'
+[2025-05-18T02:42:46.583+0000] {task_command.py:423} INFO - Running <TaskInstance: etl_dimensional_model.populate_dimensional_model manual__2025-05-18T02:42:25.693041+00:00 [running]> on host f3565a24dc17
+[2025-05-18T02:42:46.743+0000] {taskinstance.py:2481} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='airflow' AIRFLOW_CTX_DAG_ID='etl_dimensional_model' AIRFLOW_CTX_TASK_ID='populate_dimensional_model' AIRFLOW_CTX_EXECUTION_DATE='2025-05-18T02:42:25.693041+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2025-05-18T02:42:25.693041+00:00'
+[2025-05-18T02:42:50.789+0000] {taskinstance.py:2699} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.8/site-packages/airflow/models/taskinstance.py", line 433, in _execute_task
+    result = execute_callable(context=context, **execute_callable_kwargs)
+  File "/home/airflow/.local/lib/python3.8/site-packages/airflow/operators/python.py", line 199, in execute
+    return_value = self.execute_callable()
+  File "/home/airflow/.local/lib/python3.8/site-packages/airflow/operators/python.py", line 216, in execute_callable
+    return self.python_callable(*self.op_args, **self.op_kwargs)
+  File "/opt/airflow/dags/etl_load_postgres_dag.py", line 118, in populate_dimensional_model
+    country_id = get_or_create_country(row['Country'], row['smoking_prevalence'])
+  File "/opt/airflow/dags/etl_load_postgres_dag.py", line 103, in get_or_create_country
+    cur.execute("""
+psycopg2.errors.InvalidTextRepresentation: invalid input syntax for type double precision: "77.3 [76.7-77.9]"
+LINE 3:             VALUES ('China', '77.3 [76.7-77.9]') RETURNING i...
+                                     ^
+
+[2025-05-18T02:42:50.799+0000] {taskinstance.py:1138} INFO - Marking task as FAILED. dag_id=etl_dimensional_model, task_id=populate_dimensional_model, execution_date=20250518T024225, start_date=20250518T024246, end_date=20250518T024250
+[2025-05-18T02:42:50.809+0000] {standard_task_runner.py:107} ERROR - Failed to execute job 7 for task populate_dimensional_model (invalid input syntax for type double precision: "77.3 [76.7-77.9]"
+LINE 3:             VALUES ('China', '77.3 [76.7-77.9]') RETURNING i...
+                                     ^
+; 230)
+[2025-05-18T02:42:50.875+0000] {local_task_job_runner.py:234} INFO - Task exited with return code 1
+[2025-05-18T02:42:50.890+0000] {taskinstance.py:3281} INFO - 0 downstream tasks scheduled from follow-on schedule check
