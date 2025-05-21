@@ -4,76 +4,60 @@ import json
 import threading
 from datetime import datetime
 import time
-
-# ✅ Singleton para persistencia en memoria
-class MessageStore:
-    _instance = None
-
-    def __new__(cls):
-        if cls._instance is None:
-            cls._instance = super().__new__(cls)
-            cls._instance.data = {}
-        return cls._instance
-
-    def update(self, country, msg):
-        self.data[country] = msg
-
-    def get_data(self):
-        return self.data.copy()
-
-store = MessageStore()
+from message_store import shared_data  # importa la misma lista viva
 
 st.set_page_config(page_title="Lung Cancer Real-Time Dashboard", layout="wide")
-st.title("📊 Lung Cancer Metrics Dashboard (Real Time)")
-st.subheader("📌 Últimas métricas recibidas por país:")
+st.title("📊 Lung Cancer Metrics Dashboard (Último mensaje)")
+st.subheader("📌 Última métrica recibida:")
 
-# Función que escucha Kafka
+# Hilo que escucha Kafka y guarda siempre el último mensaje
 def listen_kafka():
     try:
-        print("🛰️ Conectando a Kafka...")
+        print("🛰️ Conectando a Kafka...", flush=True)
         consumer = KafkaConsumer(
             'lung_cancer_metrics',
             bootstrap_servers='kafka:9092',
             value_deserializer=lambda m: json.loads(m.decode('utf-8')),
-            auto_offset_reset='earliest',
+            auto_offset_reset='latest',
             group_id='streamlit-dashboard-group'
         )
-        print("✅ Conectado a Kafka.")
+        print("✅ Conectado a Kafka.", flush=True)
 
         for message in consumer:
             msg = message.value
             msg['timestamp'] = datetime.now().strftime("%H:%M:%S")
-            store.update(msg['country'], msg)
-            print("📨 Mensaje recibido:", msg)
+
+            shared_data.clear()
+            shared_data.append(msg)
+
+            print("📨 Último mensaje recibido:", msg, flush=True)
 
     except Exception as e:
-        print("❌ Error al conectar a Kafka:", e)
+        print("❌ Error al conectar a Kafka:", e, flush=True)
 
-# Lanzar hilo solo una vez
-if 'thread_started' not in st.session_state:
-    st.session_state.thread_started = True
+# Lanzar el hilo una sola vez
+if "kafka_thread" not in st.session_state:
     thread = threading.Thread(target=listen_kafka, daemon=True)
     thread.start()
+    st.session_state.kafka_thread = thread
 
-# Obtener datos desde el almacén persistente
-data = store.get_data()
+# Mostrar el último mensaje
+if shared_data:
+    last = shared_data[-1]
+    country = last.get('country', 'País desconocido')
+    st.markdown(f"### 🌍 {country} ({last.get('developed_status', '-')})")
 
-# Mostrar en interfaz
-if data:
-    for country, record in data.items():
-        st.markdown(f"### 🌍 {country} ({record['developed_status']})")
-        col1, col2, col3 = st.columns(3)
-        col1.metric("Años fumando (prom)", record['avg_years_smoking'])
-        col2.metric("Cigarrillos/día (prom)", record['avg_cigarettes_per_day'])
-        col3.metric("Tasa de prevalencia", record['prevalence_rate'])
-        st.metric("Tasa de mortalidad", record['mortality_rate'])
-        st.caption(f"🕒 Última actualización: {record['timestamp']}")
+    col1, col2, col3 = st.columns(3)
+    col1.metric("Años fumando (prom)", last.get('avg_years_smoking', 0))
+    col2.metric("Cigarrillos/día (prom)", last.get('avg_cigarettes_per_day', 0))
+    col3.metric("Tasa de prevalencia", last.get('prevalence_rate', 0))
+    st.metric("Tasa de mortalidad", last.get('mortality_rate', 0))
+    st.caption(f"🕒 Última actualización: {last.get('timestamp', '-')}")
 else:
-    st.warning("⏳ Aún no se han recibido métricas desde Kafka...")
+    st.warning("⏳ Esperando el primer mensaje...")
 
-# Mostrar hora de actualización
-st.caption(f"📅 Última recarga del dashboard: {datetime.now().strftime('%H:%M:%S')}")
+st.caption(f"📅 Última recarga: {datetime.now().strftime('%H:%M:%S')}")
 
-# Auto recarga
-time.sleep(10)
+# Recarga automática
+time.sleep(2)
 st.rerun()

@@ -3,8 +3,10 @@ FROM python:3.10-slim
 WORKDIR /app
 
 COPY realtime_dashboard.py /app/realtime_dashboard.py
+COPY message_store.py /app/message_store.py
 
-# Instala Streamlit actualizado explícitamente
-RUN pip install --no-cache-dir streamlit==1.28.2 kafka-python
+RUN pip install --no-cache-dir streamlit kafka-python
+
+EXPOSE 8501
 
 CMD ["streamlit", "run", "realtime_dashboard.py", "--server.port=8501", "--server.address=0.0.0.0"]

@@ -1,0 +1,19 @@
+[2025-05-21T12:40:58.130+0000] {logging_mixin.py:188} INFO - Changing /opt/airflow/logs/dag_id=etl_dimensional_model/run_id=manual__2025-05-21T12:40:55.218663+00:00/task_id=transform_api permission to 509
+[2025-05-21T12:40:58.131+0000] {logging_mixin.py:188} INFO - Failed to change /opt/airflow/logs/dag_id=etl_dimensional_model/run_id=manual__2025-05-21T12:40:55.218663+00:00/task_id=transform_api permission to 509: [Errno 1] Operation not permitted: '/opt/airflow/logs/dag_id=etl_dimensional_model/run_id=manual__2025-05-21T12:40:55.218663+00:00/task_id=transform_api'
+[2025-05-21T12:40:58.151+0000] {logging_mixin.py:188} INFO - Changing /opt/airflow/logs/dag_id=etl_dimensional_model/run_id=manual__2025-05-21T12:40:55.218663+00:00/task_id=transform_api permission to 509
+[2025-05-21T12:40:58.152+0000] {logging_mixin.py:188} INFO - Failed to change /opt/airflow/logs/dag_id=etl_dimensional_model/run_id=manual__2025-05-21T12:40:55.218663+00:00/task_id=transform_api permission to 509: [Errno 1] Operation not permitted: '/opt/airflow/logs/dag_id=etl_dimensional_model/run_id=manual__2025-05-21T12:40:55.218663+00:00/task_id=transform_api'
+[2025-05-21T12:40:58.180+0000] {taskinstance.py:1957} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: etl_dimensional_model.transform_api manual__2025-05-21T12:40:55.218663+00:00 [queued]>
+[2025-05-21T12:40:58.185+0000] {taskinstance.py:1957} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: etl_dimensional_model.transform_api manual__2025-05-21T12:40:55.218663+00:00 [queued]>
+[2025-05-21T12:40:58.186+0000] {taskinstance.py:2171} INFO - Starting attempt 1 of 1
+[2025-05-21T12:40:58.195+0000] {taskinstance.py:2192} INFO - Executing <Task(PythonOperator): transform_api> on 2025-05-21 12:40:55.218663+00:00
+[2025-05-21T12:40:58.199+0000] {standard_task_runner.py:60} INFO - Started process 215 to run task
+[2025-05-21T12:40:58.201+0000] {standard_task_runner.py:87} INFO - Running: ['airflow', 'tasks', 'run', 'etl_dimensional_model', 'transform_api', 'manual__2025-05-21T12:40:55.218663+00:00', '--job-id', '4', '--raw', '--subdir', 'DAGS_FOLDER/etl_load_postgres_dag.py', '--cfg-path', '/tmp/tmp88hrkamo']
+[2025-05-21T12:40:58.203+0000] {standard_task_runner.py:88} INFO - Job 4: Subtask transform_api
+[2025-05-21T12:40:58.237+0000] {logging_mixin.py:188} INFO - Changing /opt/airflow/logs/dag_id=etl_dimensional_model/run_id=manual__2025-05-21T12:40:55.218663+00:00/task_id=transform_api permission to 509
+[2025-05-21T12:40:58.237+0000] {logging_mixin.py:188} INFO - Failed to change /opt/airflow/logs/dag_id=etl_dimensional_model/run_id=manual__2025-05-21T12:40:55.218663+00:00/task_id=transform_api permission to 509: [Errno 1] Operation not permitted: '/opt/airflow/logs/dag_id=etl_dimensional_model/run_id=manual__2025-05-21T12:40:55.218663+00:00/task_id=transform_api'
+[2025-05-21T12:40:58.238+0000] {task_command.py:423} INFO - Running <TaskInstance: etl_dimensional_model.transform_api manual__2025-05-21T12:40:55.218663+00:00 [running]> on host a6eaa18fccf4
+[2025-05-21T12:40:58.396+0000] {taskinstance.py:2481} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='airflow' AIRFLOW_CTX_DAG_ID='etl_dimensional_model' AIRFLOW_CTX_TASK_ID='transform_api' AIRFLOW_CTX_EXECUTION_DATE='2025-05-21T12:40:55.218663+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2025-05-21T12:40:55.218663+00:00'
+[2025-05-21T12:40:58.415+0000] {python.py:201} INFO - Done. Returned value was: None
+[2025-05-21T12:40:58.427+0000] {taskinstance.py:1138} INFO - Marking task as SUCCESS. dag_id=etl_dimensional_model, task_id=transform_api, execution_date=20250521T124055, start_date=20250521T124058, end_date=20250521T124058
+[2025-05-21T12:40:58.454+0000] {local_task_job_runner.py:234} INFO - Task exited with return code 0
+[2025-05-21T12:40:58.473+0000] {taskinstance.py:3281} INFO - 0 downstream tasks scheduled from follow-on schedule check

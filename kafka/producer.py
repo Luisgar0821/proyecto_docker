@@ -1,16 +1,21 @@
 # producer.py
+
 from kafka import KafkaProducer
 import psycopg2
 import json
 import time
+import random
 
+# Esperar a que Kafka y la base estén listos
 time.sleep(30)
 
+# Inicializar productor Kafka
 producer = KafkaProducer(
     bootstrap_servers='kafka:9092',
     value_serializer=lambda v: json.dumps(v).encode('utf-8')
 )
 
+# Conexión a PostgreSQL
 conn = psycopg2.connect(
     dbname='lung_cancer',
     user='postgres',
@@ -20,6 +25,7 @@ conn = psycopg2.connect(
 )
 cur = conn.cursor()
 
+# Bucle principal
 while True:
     cur.execute("""
         SELECT 
@@ -36,7 +42,9 @@ while True:
 
     rows = cur.fetchall()
 
-    for row in rows:
+    if rows:
+        row = random.choice(rows)
+
         message = {
             'country': row[0],
             'developed_status': row[1],
@@ -44,9 +52,9 @@ while True:
             'avg_cigarettes_per_day': float(row[3]),
             'prevalence_rate': float(row[4]),
             'mortality_rate': float(row[5])
-}
+        }
 
         producer.send('lung_cancer_metrics', message)
-        print(f"✅ Enviado: {message}")
+        print(f"✅ Enviado aleatorio: {message}")
 
-    time.sleep(10)
+    time.sleep(30)
