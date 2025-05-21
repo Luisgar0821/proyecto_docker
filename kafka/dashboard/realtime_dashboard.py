@@ -48,15 +48,15 @@ if shared_data:
     st.markdown(f"### 🌍 {country} ({last.get('developed_status', '-')})")
 
     col1, col2, col3 = st.columns(3)
-    col1.metric("Años fumando (prom)", last.get('avg_years_smoking', 0))
-    col2.metric("Cigarrillos/día (prom)", last.get('avg_cigarettes_per_day', 0))
-    col3.metric("Tasa de prevalencia", last.get('prevalence_rate', 0))
-    st.metric("Tasa de mortalidad", last.get('mortality_rate', 0))
-    st.caption(f"🕒 Última actualización: {last.get('timestamp', '-')}")
+    col1.metric("Años fumando (prom)", round(last.get('avg_years_smoking', 0), 2))
+    col2.metric("Cigarrillos/día (prom)", round(last.get('avg_cigarettes_per_day', 0), 2))
+    col3.metric("Tasa de prevalencia", round(last.get('prevalence_rate', 0), 2))
+    st.metric("Tasa de mortalidad", round(last.get('mortality_rate', 0), 2))
+    st.caption(f"Última actualización: {last.get('timestamp', '-')}")
 else:
-    st.warning("⏳ Esperando el primer mensaje...")
+    st.warning("Esperando el primer mensaje...")
 
-st.caption(f"📅 Última recarga: {datetime.now().strftime('%H:%M:%S')}")
+st.caption(f"Última recarga: {datetime.now().strftime('%H:%M:%S')}")
 
 # Recarga automática
 time.sleep(2)
