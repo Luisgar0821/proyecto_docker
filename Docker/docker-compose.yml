@@ -91,7 +91,8 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
   kafka-ui:
     image: provectuslabs/kafka-ui:latest
     container_name: kafka_ui
@@ -123,6 +124,18 @@ services:
       - ../kafka:/app
     working_dir: /app
     command: /bin/bash -c "pip install kafka-python && python consumer.py"
+  
+  streamlit:
+    build:
+      context: ../kafka/dashboard
+      dockerfile: Dockerfile.streamlit
+    container_name: streamlit_dashboard
+    ports:
+      - "8501:8501"
+    depends_on:
+      - kafka
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
 volumes:
   postgres-db-volume:
