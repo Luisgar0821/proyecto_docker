@@ -57,4 +57,4 @@ while True:
         producer.send('lung_cancer_metrics', message)
         print(f"✅ Enviado aleatorio: {message}")
 
-    time.sleep(30)
+    time.sleep(10)

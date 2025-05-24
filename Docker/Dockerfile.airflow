@@ -1,0 +1,7 @@
+# Dockerfile.airflow
+FROM apache/airflow:2.8.0
+
+# Instalar librerías adicionales compatibles
+RUN pip install \
+    pycountry \
+    great_expectations==0.16.16

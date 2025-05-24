@@ -46,13 +46,11 @@ def transform_data():
     ]
     df = df[selected_columns]
 
-    # Mapear valores tipo 'Yes'/'No' a booleanos
     bool_cols = ['Smoker', 'Passive_Smoker', 'Family_History', 'Occupational_Exposure',
                  'Indoor_Pollution', 'Early_Detection']
     for col in bool_cols:
         df[col] = df[col].map({'Yes': True, 'No': False})
 
-    # Reemplazar nulos con 'Ninguno' en columnas categóricas
     df['Treatment_Type'] = df['Treatment_Type'].fillna("Ninguno")
     df['Cancer_Stage'] = df['Cancer_Stage'].fillna("Ninguno")
 
@@ -62,28 +60,25 @@ def transform_data():
 def transform_api():
     df = pd.read_csv(API_PATH)
 
-    # Traducir códigos de país a nombres
     def get_country_name(code):
         try:
             return pycountry.countries.get(alpha_3=code).name
         except:
             return None
+
     df["country"] = df["country_code"].apply(get_country_name)
 
-    # Extraer solo el valor promedio de smoking_prevalence (antes del espacio)
     def limpiar_smoking_prevalence(valor):
         try:
             return float(str(valor).split(" ")[0])
         except:
             return None
+
     df["smoking_prevalence"] = df["smoking_prevalence"].apply(limpiar_smoking_prevalence)
-
-    # Agrupar por país y sacar un único valor promedio
     df = df.groupby("country", as_index=False)["smoking_prevalence"].mean()
-
     df.to_csv(API_PATH, index=False)
 
-# Task 5: Hacer merge
+# Task 5: Merge
 def merge_data():
     df_csv = pd.read_csv(TEMP_PATH)
     df_api = pd.read_csv(API_PATH)
@@ -92,8 +87,7 @@ def merge_data():
     df_merged.drop(columns=[col for col in ['country_code', 'country'] if col in df_merged.columns], inplace=True)
     df_merged.to_csv(MERGED_PATH, index=False)
 
-# Task 6: Poblar modelo dimensional
-
+# Task 6: Cargar en modelo dimensional
 def populate_dimensional_model():
     df = pd.read_csv(MERGED_PATH)
     conn = psycopg2.connect(
@@ -240,7 +234,7 @@ with DAG(
         python_callable=populate_dimensional_model
     )
 
-    # Dependencias 
+    # Dependencias del DAG
     task_extract_csv >> task_transform_csv
     task_extract_api >> task_transform_api
     [task_transform_csv, task_transform_api] >> task_merge

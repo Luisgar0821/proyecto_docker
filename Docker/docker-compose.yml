@@ -13,9 +13,29 @@ services:
     volumes:
       - ./create_schema.sql:/docker-entrypoint-initdb.d/create_schema.sql
 
+  airflow-init:
+    image: apache/airflow:2.7.3
+    container_name: airflow_init
+    depends_on:
+      - db
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__CORE__FERNET_KEY: ''
+      AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://postgres:123456@db:5432/lung_cancer
+    entrypoint: >
+      bash -c "
+        pip install pycountry &&
+        airflow db migrate &&
+        airflow users create --username airflow --firstname Admin --lastname User --role Admin --email airflow@example.com --password airflow
+      "
+
   airflow-webserver:
-    image: apache/airflow:2.8.0
+    image: apache/airflow:2.7.3
     container_name: airflow_webserver
+    restart: always
+    depends_on:
+      - airflow-init
     environment:
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
       AIRFLOW__CORE__FERNET_KEY: ''
@@ -29,28 +49,18 @@ services:
       - ../airflow/dags/DATASET:/opt/airflow/dags/DATASET
     ports:
       - "8080:8080"
-    depends_on:
-      - db
     command: >
       bash -c "
         pip install pycountry &&
-        if [ ! -f /opt/airflow/airflow.db_initialized ]; then
-          airflow db migrate &&
-          airflow users create \
-            --username airflow \
-            --firstname Admin \
-            --lastname User \
-            --role Admin \
-            --email airflow@example.com \
-            --password airflow &&
-          touch /opt/airflow/airflow.db_initialized;
-        fi &&
         airflow webserver
       "
 
   airflow-scheduler:
-    image: apache/airflow:2.8.0
+    image: apache/airflow:2.7.3
     container_name: airflow_scheduler
+    restart: always
+    depends_on:
+      - airflow-webserver
     environment:
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://postgres:123456@db:5432/lung_cancer
@@ -58,15 +68,9 @@ services:
       - ../airflow/dags:/opt/airflow/dags
       - ../airflow/logs:/opt/airflow/logs
       - ../airflow/plugins:/opt/airflow/plugins
-    depends_on:
-      - db
     command: >
       bash -c "
         pip install pycountry &&
-        if [ ! -f /opt/airflow/airflow.db_initialized ]; then
-          airflow db migrate &&
-          touch /opt/airflow/airflow.db_initialized;
-        fi &&
         airflow scheduler
       "
 
@@ -93,6 +97,7 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     extra_hosts:
       - "host.docker.internal:host-gateway"
+
   kafka-ui:
     image: provectuslabs/kafka-ui:latest
     container_name: kafka_ui
@@ -124,7 +129,7 @@ services:
       - ../kafka:/app
     working_dir: /app
     command: /bin/bash -c "pip install kafka-python && python consumer.py"
-  
+
   streamlit:
     build:
       context: ../kafka/dashboard

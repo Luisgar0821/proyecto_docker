@@ -59,5 +59,5 @@ else:
 st.caption(f"Última recarga: {datetime.now().strftime('%H:%M:%S')}")
 
 # Recarga automática
-time.sleep(2)
+time.sleep(10)
 st.rerun()
