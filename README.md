@@ -91,7 +91,7 @@ Este sistema busca simular un entorno real de monitoreo de salud pública relaci
 ### 1. Clonar el repositorio
 
 ```bash
-git clone https://github.com/usuario/etl-lung-cancer.git
+git clone https://github.com/Luisgar0821/proyecto_docker
 cd etl-lung-cancer/Docker
 ```
 
